@@ -7,6 +7,8 @@ from people_web_app.domain.model import Person
 def create_app():
     app = Flask(__name__)
 
+    app.config.from_object('config.Config')
+
     repo.repo_instance = repo.PeopleRepository(
         Person(74633, 'Julius', 'Caeser'),
         Person(88337, 'Genghis', 'Khan'),
@@ -14,5 +16,9 @@ def create_app():
         Person(12826, 'Mahatma', 'Ghandi'),
         Person(92213, 'Nelson', 'Mandela')
     )
+
+    with app.app_context():
+        from .people_blueprint import people
+        app.register_blueprint(people.people_blueprint)
 
     return app
